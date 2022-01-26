@@ -77,15 +77,7 @@ void MyPrint::setCursorPosition(double x, int y) {
 }
 
 void MyPrint::printOneMahjong(int id, int x, int y, int flag) {
-    if(id >= 1 && id <= 9) {
-        setColor(3);
-    } else if(id >= 11 && id <= 19) {
-        setColor(4);
-    } else if(id >= 21 && id <= 29) {
-        setColor(5);
-    } else {
-        setColor(6);
-    }
+
     string name = mahjongName[id];
     switch(flag) {
         case PRINTMAHJONG_MINE:
@@ -128,7 +120,7 @@ void MyPrint::printOneMahjong(int id, int x, int y, int flag) {
             printf("%s",name.c_str());
             break;
     }
-    setColor(3);
+    setColor(0x8e);
 }
 
 void MyPrint::setColor(int colorID) {
@@ -142,6 +134,15 @@ void MyPrint::printMyAllMahjong(const list<int> &myMahjong, int i) {
     int num = 0;
     for(auto iter = myMahjong.begin(); iter != myMahjong.end(); iter++, step+=5, num++) {
         int id = *iter;
+        if(id >= 1 && id <= 9) {
+            setColor(0x8e);
+        } else if(id >= 11 && id <= 19) {
+            setColor(0x8a);
+        } else if(id >= 21 && id <= 29) {
+            setColor(0x80);
+        } else {
+            setColor(0x8f);
+        }
         if(num == i) {
             //打印覆盖
             setCursorPosition(LEFTDOWNPOINT_X + step - 5, LEFTDOWNPOINT_Y -1);
@@ -157,9 +158,9 @@ void MyPrint::printMyAllMahjong(const list<int> &myMahjong, int i) {
                 setCursorPosition(LEFTDOWNPOINT_X, LEFTDOWNPOINT_Y-1);
                 printf("          ");
             }
-            setColor(23);
+            setColor(0x7c);
             printOneMahjong(id, LEFTDOWNPOINT_X + step, LEFTDOWNPOINT_Y-1, PRINTMAHJONG_MINE);
-            setColor(3);
+            setColor(0x8e);
             continue;
         } 
         printOneMahjong(id, LEFTDOWNPOINT_X + step, LEFTDOWNPOINT_Y, PRINTMAHJONG_MINE);
@@ -178,15 +179,25 @@ void MyPrint::printDeskMahjong(const vector<int> &deskMahjong, int flag) {
     int column = DESKMAHJONG_ONE_ROW_NUM;
     int xstep = 0;
     int ystep = 0;
-    setColor(3);
+    setColor(0x8e);
     for(int i = 0, n = deskMahjong.size(); i < n; i++, xstep += 3) {
+        int id = deskMahjong[i];
+        if(id >= 1 && id <= 9) {
+            setColor(0x8e);
+        } else if(id >= 11 && id <= 19) {
+            setColor(0x8a);
+        } else if(id >= 21 && id <= 29) {
+            setColor(0x80);
+        } else {
+            setColor(0x8f);
+        }
         printOneMahjong(deskMahjong[i], DESKMAHJONG_X + xstep, DESKMAHJONG_Y + ystep, PRINTMAHJONG_DESK);
         if(i == n-1) {
             if(flag == PRINTDESK_LIGHT) {
-                setColor(23);
+                setColor(0x7c);
             }
             printOneMahjong(deskMahjong[i], DESKMAHJONG_X + xstep, DESKMAHJONG_Y + ystep, PRINTMAHJONG_DESK);
-            setColor(3);
+            setColor(0x8e);
         }
         if((i + 1) % column == 0) {
             ystep += 4;
@@ -243,14 +254,14 @@ void MyPrint::printPongKongChow(vector<PongKongChow*> allPongKongChow, int who) 
         for(auto onePKC : allPongKongChow) {
             switch(onePKC->flag) {
                 case PONG:
-                    setColor(3);
+                    setColor(0x8e);
                     for(int i = 0, n = onePKC->mahjong.size(); i < n; i++, xstep += xaddstep) {
                         if(i == onePKC->lightIndex) {
-                            setColor(27);
+                            setColor(0x7c);
                         }
                         printOneMahjong(onePKC->mahjong[i], positionX + xstep, positionY, PRINTMAHJONG_PENGKONGCHOW);
                         if(i == onePKC->lightIndex) {
-                            setColor(3);
+                            setColor(0x8e);
                         }
 
                     }
@@ -372,9 +383,9 @@ void MyPrint::printPlayerName(Mahjong *mahjong, int who) {
     who = MySocket::message.nowNum;
     setCursorPosition(LEFT_NAME_X, LEFT_NAME_Y);
     if(who == mahjong->leftNum) {
-        setColor(23);
+        setColor(0x7c);
         cout << mahjong->allPlayerNumToName[mahjong->leftNum];
-        setColor(3);
+        setColor(0x8e);
     } else {
         cout << mahjong->allPlayerNumToName[mahjong->leftNum];
     }
@@ -382,9 +393,9 @@ void MyPrint::printPlayerName(Mahjong *mahjong, int who) {
 
     setCursorPosition(RIGHT_NAME_X, RIGHT_NAME_Y);
     if(who == mahjong->rightNum) {
-        setColor(23);
+        setColor(0x7c);
         cout << mahjong->allPlayerNumToName[mahjong->rightNum];
-        setColor(3);
+        setColor(0x8e);
     } else {
         cout << mahjong->allPlayerNumToName[mahjong->rightNum];
     }
@@ -392,9 +403,9 @@ void MyPrint::printPlayerName(Mahjong *mahjong, int who) {
 
     setCursorPosition(OPPOSITE_NAME_X, OPPOSITE_NAME_Y);
     if(who == mahjong->oppositeNum) {
-        setColor(23);
+        setColor(0x7c);
         cout << mahjong->allPlayerNumToName[mahjong->oppositeNum];
-        setColor(3);
+        setColor(0x8e);
     } else {    
         cout << mahjong->allPlayerNumToName[mahjong->oppositeNum];
     }
@@ -402,9 +413,9 @@ void MyPrint::printPlayerName(Mahjong *mahjong, int who) {
 
     setCursorPosition(MY_NAME_X, MY_NAME_Y);
     if(who == mahjong->myNum) {
-        setColor(23);
+        setColor(0x7c);
         cout << mahjong->allPlayerNumToName[mahjong->myNum];
-        setColor(3);
+        setColor(0x8e);
     } else {
         cout << mahjong->allPlayerNumToName[mahjong->myNum];
     }
@@ -474,9 +485,9 @@ void MyPrint::printAnKongChose(vector<int> &anKongArr, int lightIndex) {
 
     if(lightIndex == 4) {
         setCursorPosition(DEFAULT_BOTTON_X, DEFAULT_BOTTPN_Y);
-        setColor(23);
+        setColor(0x7c);
         printf("(左右键选择回车键发送size:%d, index:%d)", anKongArr.size(), lightIndex);  
-        setColor(3);
+        setColor(0x8e);
     } else {
         printf("(左右键选择回车键发送size:%d, index:%d)", anKongArr.size(), lightIndex); 
     }
@@ -484,13 +495,13 @@ void MyPrint::printAnKongChose(vector<int> &anKongArr, int lightIndex) {
     for(int i = 0; i<anKongArr.size(); i++) {
         setCursorPosition(PONG_BOTTON_X + 5*i, PONG_BOTTON_Y);
         if(lightIndex == i) {
-            setColor(23);
+            setColor(0x7c);
             if(i == anKongArr.size()-1) {
                 printf("取消!");  
             }else {
                 printf("%s", mahjongName[anKongArr[i]].c_str());  
             }
-            setColor(3);
+            setColor(0x8e);
         }else {
             if(i == anKongArr.size()-1) {
                 printf("取消!");  
@@ -509,9 +520,9 @@ int MyPrint::printPKCWBotton(vector<int> &pkcwArr, int lightIndex) {
     if(pkcwArr[0]) {
         setCursorPosition(PONG_BOTTON_X, PONG_BOTTON_Y);
         if(lightIndex == 0) {
-            setColor(23);
+            setColor(0x7c);
             printf("碰!");  
-            setColor(3);
+            setColor(0x8e);
         }else {
             printf("碰!");
         }
@@ -520,9 +531,9 @@ int MyPrint::printPKCWBotton(vector<int> &pkcwArr, int lightIndex) {
     if(pkcwArr[1]) {
         setCursorPosition(KONG_BOTTON_X, KONG_BOTTON_Y);
         if(lightIndex == 1) {
-            setColor(23);
+            setColor(0x7c);
             printf("杠!");  
-            setColor(3);
+            setColor(0x8e);
         }else {
             printf("杠!");
         }
@@ -531,9 +542,9 @@ int MyPrint::printPKCWBotton(vector<int> &pkcwArr, int lightIndex) {
     if(pkcwArr[2]) {
         setCursorPosition(CHOW_BOTTON_X, CHOW_BOTTON_Y);
         if(lightIndex == 2) {
-            setColor(23);
+            setColor(0x7c);
             printf("吃!");  
-            setColor(3);
+            setColor(0x8e);
         }else {
             printf("吃!");
         }
@@ -542,9 +553,9 @@ int MyPrint::printPKCWBotton(vector<int> &pkcwArr, int lightIndex) {
     if(pkcwArr[3]) {
         setCursorPosition(WIN_BOTTON_X, WIN_BOTTON_Y);
         if(lightIndex == 3) {
-            setColor(23);
+            setColor(0x7c);
             printf("胡!");  
-            setColor(3);
+            setColor(0x8e);
         }else {
             printf("胡!");
         }
@@ -554,9 +565,9 @@ int MyPrint::printPKCWBotton(vector<int> &pkcwArr, int lightIndex) {
     if(pkcwArr[4]) {
         setCursorPosition(CANCEL_BOTTON_X, CANCEL_BOTTON_Y);
         if(lightIndex == 4) {
-            setColor(23);
+            setColor(0x7c);
             printf("取消!");  
-            setColor(3);
+            setColor(0x8e);
         }else {
             printf("取消!");
         }
@@ -565,9 +576,9 @@ int MyPrint::printPKCWBotton(vector<int> &pkcwArr, int lightIndex) {
     if(pkcwArr[5]) {
         setCursorPosition(DEFAULT_BOTTON_X, DEFAULT_BOTTPN_Y);
         if(lightIndex == 5) {
-            setColor(23);
+            setColor(0x7c);
             printf("(左右键选择回车键发送)");  
-            setColor(3);
+            setColor(0x8e);
         }else {
             printf("(左右键选择回车键发送)");
         }

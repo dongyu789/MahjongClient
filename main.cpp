@@ -5,6 +5,7 @@
 #include "Controller.h"
 #include "Mahjong.h"
 int main() {
+    system("color 8e");
     Controller *controller = new Controller();
     controller->start();
     

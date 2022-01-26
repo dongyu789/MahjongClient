@@ -54,7 +54,7 @@ void Controller::start() {
 
     cout << "输入你要进入的桌子号" << endl;
     cin >> deskNum;
-    cout << "请输入你的名字" <<endl;
+    cout << "请输入你的名字(不超过16个字符)" <<endl;
     cin >> name;
     
     printf("桌子号 : %d 姓名: %s\n", deskNum, name.c_str());
@@ -89,11 +89,11 @@ void Controller::start() {
 }
 
 void Controller::fillName() {
-    Message message;
+   
     //填充信息
-    while(MySocket::message.OPTION != 0) {
-        Message message = MySocket::recvMsg();
-    }
+    
+    Message message = MySocket::recvMsg();
+    
     
     mahjong->allPlayerNumToName[mahjong->leftNum] = message.leftName;
     mahjong->allPlayerNumToName[mahjong->rightNum] = message.rightName;
@@ -719,8 +719,9 @@ void Controller::doSelect() {
 
 void Controller::refrashScreen(int microsecond) {
     system("cls");
+    system("color 8e");
     Sleep(microsecond);
-    myPrint->printAll(mahjong,MySocket::message.nowNum, PRINTDESK_LIGHT);
+    myPrint->printAll(mahjong, MySocket::message.nowNum, PRINTDESK_LIGHT);
 }
 
 void Controller::discard() {
@@ -755,6 +756,7 @@ void Controller::discard() {
     
 }
 
+//废弃
 int Controller::delOneMahjongFromLocation(int index) {
     //删掉指定位置的麻将
     int mahjongNum = -1;
@@ -775,8 +777,10 @@ void Controller::selectDesk(int deskNum, string name) {
         Message message;
         message.deskNum = deskNum;
         message.OPTION = SELECT_DESK;
+        
 
-        strcpy(message.myName, name.c_str());
+        strncpy(message.myName, name.c_str(), 16);
+        message.myName[16] = '\0';
         sendMsg(message);
         recvMsg();
         message = MySocket::message;

@@ -107,9 +107,9 @@ void Controller::playGame() {
     thread threadSelectMahjong(&Controller::selectMahjong, this);
     threadSelectMahjong.detach();
 
-    //一秒打印一下接收的信息
-    thread threadTest(&Controller::testPrint, this);
-    threadTest.detach();
+    // //一秒打印一下接收的信息
+    // thread threadTest(&Controller::testPrint, this);
+    // threadTest.detach();
 
     //主线程用来接收消息
     while(1) {
@@ -277,20 +277,11 @@ void Controller::handlePongKong() {
     //自己的碰杠
     int size = mahjong->myMahjong.size();
 
-    vector<int> indexes;
-    int index = 0;
-
-    //找到麻将下标
-    for(auto iter = mahjong->myMahjong.begin(); iter != mahjong->myMahjong.end(); iter++, index++) {
-        if(*iter == mahjongNum) {
-            indexes.push_back(index);
-        }
-    }
-
     
+
+    //删除指定麻将
     for(int i = 0; i < num; i++) {
-        index = indexes[i];
-        delOneMahjongFromLocation(index);
+        delOneMahjongFromNum(mahjongNum);
         pkc->mahjong.push_back(mahjongNum);
     }
 
@@ -384,12 +375,12 @@ int Controller::judgePongKongWin() {
             case ENTER:
                 //返回最后的决定，解除选择线程的阻塞
                 blockSelectMahjong = 0;
+                kongBit = 0;
+                pongBit = 0;
+                winBit = 0;
+                chowBit = 0;
                 if(lightIndex == 4) {
                     //Normal
-                    kongBit = 0;
-                    pongBit = 0;
-                    winBit = 0;
-                    chowBit = 0;
                     return NORMAL;
                 }
             

@@ -21,7 +21,7 @@ using namespace std;
 #pragma comment(lib, "ws2_32.lib")
 
 
-#define SERVER_IP "172.28.166.191"
+#define SERVER_IP "172.28.167.206"
 #define SERVER_PORT 9998
 
 //用来和服务器传输的消息

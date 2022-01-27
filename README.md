@@ -1,7 +1,7 @@
 # MahjongClient
 one client of Mahjong game
 
-## 拷贝代码后在makefile目录中执行make即可
+## 拷贝代码后在makefile目录中执行make，编译完成后运行main.exe即可
 
 麻将游戏Windows客户端，用终端模拟显示，使用Socket网络编程和服务器进行通信，支持多人游戏，前提是把另一个服务器的代码拷贝到linux上跑起来哈。
 
